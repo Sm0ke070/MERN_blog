@@ -1,10 +1,11 @@
 import express from "express"
+import multer from "multer"
 import mongoose from 'mongoose'
 import checkAuth from './utils/checkAuth.js'
 import {loginValidation, postCreateValidation, registerValidation} from './validations.js'
 import * as UserController from './controllers/UserController.js'
 import * as PostController from "./controllers/PostController.js";
-import {removePost} from "./controllers/PostController.js";
+import handleValidationErrors from "./utils/handleValidationErrors.js";
 
 
 mongoose
@@ -13,25 +14,38 @@ mongoose
     .catch((err) => console.log('DB Error', err))
 
 const app = express()
-app.use(express.json())
+const storage = multer.diskStorage({
+    destination: (_, __, cb) => {
+        cb(null, 'uploads')
+    },
+    filename: (_, file, cb) => {
+        cb(null, `${Date.now()}${file.originalname}`) //FIX
+    }
+})
 
+const upload = multer({storage})
+
+app.use(express.json())
+app.use('/uploads', express.static('uploads'))
 
 //LOGIN
-app.post('/auth/login', loginValidation, UserController.login)
-
+app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login)
 //REGISTER
-app.post('/auth/register', registerValidation, UserController.register)
-
+app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register)
 //AUTH
 app.get('/auth/me', checkAuth, UserController.getMe)
-
+//UPLOAD
+app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
+    res.json({
+        url: `uploads/${req.file.originalname}`
+    })
+})
 //POSTS
 app.get('/posts', PostController.getAllPosts)
 app.get('/posts/:id', PostController.getOnePost)
-app.post('/posts', checkAuth, postCreateValidation, PostController.createPost)
+app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.createPost)
 app.delete('/posts/:id', checkAuth, PostController.removePost)
-app.patch('/posts/:id',checkAuth, PostController.update)
-
+app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update)
 
 app.listen(4444, (err) => {
     if (err) {
