@@ -12,21 +12,21 @@ import {Link} from "react-router-dom";
 import styles from './Post.module.scss';
 
 type PostPropsType = {
-    _id: string
-    title: string
-    createdAt: string
-    imageUrl: string
-    user: any
-    viewsCount: number
-    commentsCount: number
+    id?: number
+    title?: string
+    createdAt?: string
+    imageUrl?: string
+    user?: any
+    viewsCount?: number
+    commentsCount?: number
     tags: string[]
-    children: any
-    isFullPost: boolean
-    isLoading: boolean
-    isEditable: boolean
+    children?: any
+    isFullPost?: boolean
+    isLoading?: boolean
+    isEditable?: boolean
 }
 export const Post: FC<PostPropsType> = ({
-                                            _id,
+                                            id,
                                             title,
                                             createdAt,
                                             imageUrl,
@@ -50,7 +50,7 @@ export const Post: FC<PostPropsType> = ({
         <div className={clsx(styles.root, {[styles.rootFull]: isFullPost})}>
             {isEditable && (
                 <div className={styles.editButtons}>
-                    <Link to={`${routes.POSTS}${_id}/edit`}>
+                    <Link to={`${routes.POSTS}${id}/edit`}>
                         <IconButton color="primary">
                             <EditIcon/>
                         </IconButton>
@@ -71,7 +71,7 @@ export const Post: FC<PostPropsType> = ({
                 <UserInfo {...user} additionalText={createdAt}/>
                 <div className={styles.indention}>
                     <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
-                        {isFullPost ? title : <Link to={`${routes.POSTS}${_id}`}>{title}</Link>}
+                        {isFullPost ? title : <Link to={`${routes.POSTS}${id}`}>{title}</Link>}
                     </h2>
                     <ul className={styles.tags}>
                         {tags.map((name) => (
