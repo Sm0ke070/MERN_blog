@@ -1,15 +1,21 @@
-import React from 'react';
+import React, {FC} from 'react';
 import Button from '@mui/material/Button';
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
 import {Link} from "react-router-dom";
 import {routes} from "../../constants/appPath";
+import {useAppDispatch, useAppSelector} from "../../redux/store";
+import {logout, selectIsAuth} from "../../redux/slices/auth/auth";
 
-export const Header = () => {
-    const isAuth = true;
+export const Header: FC = () => {
+    const isAuth = useAppSelector(selectIsAuth) //FIX
+    const dispatch = useAppDispatch()
+
+
 
     const onClickLogout = () => {
-    };
+        dispatch(logout())
+    }
 
     return (
         <div className={styles.root}>

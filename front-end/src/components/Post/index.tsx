@@ -7,19 +7,22 @@ import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import {UserInfo} from '../UserInfo';
 import {PostSkeleton} from './Skeleton';
-import {routes} from "../../constants/appPath";
 import {Link} from "react-router-dom";
 import styles from './Post.module.scss';
 
 type PostPropsType = {
-    id?: number
+    id?: string
     title?: string
-    createdAt?: string
+    createdAt?: Date
     imageUrl?: string
-    user?: any
+    user?: {
+        _id: string
+        fullName: string
+        email: string
+    }
     viewsCount?: number
     commentsCount?: number
-    tags: string[]
+    tags?: string[]
     children?: any
     isFullPost?: boolean
     isLoading?: boolean
@@ -50,7 +53,7 @@ export const Post: FC<PostPropsType> = ({
         <div className={clsx(styles.root, {[styles.rootFull]: isFullPost})}>
             {isEditable && (
                 <div className={styles.editButtons}>
-                    <Link to={`${routes.POSTS}${id}/edit`}>
+                    <Link to={`posts/${id}/edit`}>
                         <IconButton color="primary">
                             <EditIcon/>
                         </IconButton>
@@ -71,10 +74,10 @@ export const Post: FC<PostPropsType> = ({
                 <UserInfo {...user} additionalText={createdAt}/>
                 <div className={styles.indention}>
                     <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
-                        {isFullPost ? title : <Link to={`${routes.POSTS}${id}`}>{title}</Link>}
+                        {isFullPost ? title : <Link to={`posts/${id}`}>{title}</Link>}
                     </h2>
                     <ul className={styles.tags}>
-                        {tags.map((name) => (
+                        {tags && tags.map((name) => (
                             <li key={name}>
                                 <Link to={`/tag/${name}`}>#{name}</Link>
                             </li>
