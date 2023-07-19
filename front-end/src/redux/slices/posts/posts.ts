@@ -15,8 +15,8 @@ export interface IFetchPosts {
         fullName: string
         email: string
     }
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
 }
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {

@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
-
-import {Post, Index, CommentsBlock} from "../components";
-import {useParams} from "react-router";
 import axios from "../axios";
+import {useParams} from "react-router";
+import React, {useEffect, useState} from "react";
 import {IFetchPosts} from "../redux/slices/posts/posts";
+import {Post, Index, CommentsBlock} from "../components";
 
 export const FullPost = () => {
     const [data, setData] = useState<IFetchPosts | null>(null)

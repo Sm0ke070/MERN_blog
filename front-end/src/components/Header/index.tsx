@@ -5,16 +5,16 @@ import Container from '@mui/material/Container';
 import {Link} from "react-router-dom";
 import {routes} from "../../constants/appPath";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
-import {logout, selectIsAuth} from "../../redux/slices/auth/auth";
+import {logout} from "../../redux/slices/auth/auth";
 
 export const Header: FC = () => {
-    const isAuth = useAppSelector(selectIsAuth) //FIX
+    const isAuth = useAppSelector(state => state.auth.isAuth)
     const dispatch = useAppDispatch()
-
 
 
     const onClickLogout = () => {
         dispatch(logout())
+        window.localStorage.removeItem('token')
     }
 
     return (

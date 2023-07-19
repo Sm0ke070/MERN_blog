@@ -1,7 +1,6 @@
-import {validationResult} from "express-validator";
-import bcrypt from "bcrypt";
-import UserModel from "../models/User.js";
-import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt"
+import UserModel from "../models/User.js"
+import jwt from "jsonwebtoken"
 
 export const register = async (req, res) => {
     try {
@@ -13,8 +12,8 @@ export const register = async (req, res) => {
             email: req.body.email,
             fullName: req.body.fullName,
             password: req.body.password,
+            avatarUrl: req.body.avatarUrl,
             passwordHash: hash,
-            avatarUrl: req.avatarUrl,
         })
 
         const user = await doc.save()
@@ -48,37 +47,38 @@ export const login = async (req, res) => {
 
         if (!user) {
             return res.status(404).json({
-                message: 'Пользователь не найден'
+                message: 'Пользователь не найден',
             })
         }
         const isValidPass = await bcrypt.compare(req.body.password, user._doc.passwordHash)
 
         if (!isValidPass) {
             return res.status(400).json({
-                message: 'Неверный логин или пароль'
+                message: 'Неверный логин или пароль',
             })
         }
-        const token = jwt.sign({
-                _id: user.id
+        const token = jwt.sign(
+            {
+                _id: user.id,
             },
             'secret123',
             {
-                expiresIn: '30d'
+                expiresIn: '30d',
             }
         )
         const {passwordHash, ...userData} = user._doc
         res.json({
             ...userData,
-            token
+            token,
         })
-    } catch
-        (err) {
+    } catch (err) {
         console.log(err)
         res.status(500).json({
-            message: 'Не удалось авторизоваться'
+            message: 'Не удалось авторизоваться',
         })
     }
 }
+
 
 export const getMe = async (req, res) => {
     try {

@@ -1,19 +1,24 @@
 import React, {FC} from 'react';
 import styles from './UserInfo.module.scss';
+import defaultUserAvatar from './defaultUserAvatar.png'
 
 type UserInfoPropsType = {
-    fullName: string
-    avatarUrl: string
-    additionalText: any
+    additionalText?: string
+    user?: {
+        _id: string
+        fullName: string
+        email: string
+        avatarUrl?: string
+    }
 }
-export const UserInfo: FC<any> = ({avatarUrl, fullName, additionalText}) => {
-    console.log(fullName)
+export const UserInfo: FC<UserInfoPropsType> = ({user, additionalText}) => {
+
     return (
         <div className={styles.root}>
-            <img className={styles.avatar} src={avatarUrl || '/noavatar.png'} alt={fullName}/>
+            <img className={styles.avatar} src={user?.avatarUrl || defaultUserAvatar} alt={user?.fullName}/>
             <div className={styles.userDetails}>
-                <span className={styles.userName}>{fullName}</span>
-                <span className={styles.additional}>{additionalText}</span>
+                <span className={styles.userName}>{user?.fullName}</span>
+                <span className={styles.additional}>{additionalText?.slice(0, 10)}</span>
             </div>
         </div>
     );

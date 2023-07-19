@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Container from "@mui/material/Container";
 import {Header} from "./components";
 
@@ -6,9 +6,19 @@ import {Home, FullPost, Registration, AddPost, Login} from "./pages";
 import NotFound from "./pages/NotFound";
 import {routes} from "./constants/appPath";
 import {Route, Routes} from "react-router";
+import {useAppDispatch, useAppSelector} from "./redux/store";
+import {fetchAuthMe} from "./redux/slices/auth/auth";
 
 
 function App() {
+
+    const dispatch = useAppDispatch()
+    const isAuth = useAppSelector(state => state.auth.isAuth)
+
+    useEffect(() => {
+        dispatch(fetchAuthMe())
+    }, [])
+
 
     return (
         <>

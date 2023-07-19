@@ -9,11 +9,12 @@ import {UserInfo} from '../UserInfo';
 import {PostSkeleton} from './Skeleton';
 import {Link} from "react-router-dom";
 import styles from './Post.module.scss';
+import {IFetchAuth} from "../../redux/slices/auth/auth";
 
 type PostPropsType = {
     id?: string
     title?: string
-    createdAt?: Date
+    createdAt?: string
     imageUrl?: string
     user?: {
         _id: string
@@ -71,7 +72,7 @@ export const Post: FC<PostPropsType> = ({
                 />
             )}
             <div className={styles.wrapper}>
-                <UserInfo {...user} additionalText={createdAt}/>
+                <UserInfo user={user} additionalText={createdAt}/>
                 <div className={styles.indention}>
                     <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
                         {isFullPost ? title : <Link to={`posts/${id}`}>{title}</Link>}
