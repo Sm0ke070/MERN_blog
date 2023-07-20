@@ -51,6 +51,7 @@ const authSlice = createSlice({
     name: 'auth',
     reducers: {
         logout: (state) => {
+            state.data = null
             state.isAuth = false
         }
     },

@@ -15,7 +15,6 @@ export const Login: FC = () => {
     const dispatch = useAppDispatch()
     const isAuth = useAppSelector(state => state.auth.isAuth)
 
-
     const {
         register,
         handleSubmit,

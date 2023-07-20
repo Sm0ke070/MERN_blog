@@ -1,25 +1,39 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
+import React, {ChangeEvent, useRef, useState} from 'react';
+import 'easymde/dist/easymde.min.css';
+import {Navigate} from "react-router";
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import SimpleMDE from "react-simplemde-editor";
-
-import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
+import SimpleMDE from "react-simplemde-editor";
+import TextField from '@mui/material/TextField';
+import {useAppSelector} from "../../redux/store";
 
 export const AddPost = () => {
-    const imageUrl = '';
-    const [value, setValue] = React.useState('');
 
-    const handleChangeFile = () => {
-    };
+    const imageUrl = ''
+    const isAuth = useAppSelector(state => state.auth.isAuth)
+    const [value, setValue] = useState('')
+    const [title, setTitle] = useState('')
+    const [tags, setTags] = useState('')
+    const inputFileRef = useRef<HTMLInputElement | null>(null)
+
+    const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
+        try {
+            const formData = new FormData()
+            const file = event.target.files
+            if (file) return formData.append('image', file[0])
+
+        } catch (err) {
+
+        }
+    }
 
     const onClickRemoveImage = () => {
-    };
+    }
 
     const onChange = React.useCallback((value: string) => {
         setValue(value);
-    }, []);
+    }, [])
 
     const options = React.useMemo(
         () => ({
@@ -34,14 +48,18 @@ export const AddPost = () => {
             },
         }),
         [],
-    );
+    )
+
+    if (!isAuth) {
+        return <Navigate to={'/'}/>
+    }
 
     return (
         <Paper style={{padding: 30}}>
-            <Button variant="outlined" size="large">
+            <Button onClick={() => inputFileRef.current?.click()} variant="outlined" size="large">
                 Загрузить превью
             </Button>
-            <input type="file" onChange={handleChangeFile} hidden/>
+            <input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden/>
             {imageUrl && (
                 <Button variant="contained" color="error" onClick={onClickRemoveImage}>
                     Удалить
@@ -56,6 +74,8 @@ export const AddPost = () => {
                 classes={{root: styles.title}}
                 variant="standard"
                 placeholder="Заголовок статьи..."
+                value={title}
+                onChange={(e) => setTitle(e.currentTarget.value)}
                 fullWidth
             />
             <TextField classes={{root: styles.tags}} variant="standard" placeholder="Тэги" fullWidth/>

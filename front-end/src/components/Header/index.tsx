@@ -1,16 +1,15 @@
 import React, {FC} from 'react';
+import {Link} from "react-router-dom";
 import Button from '@mui/material/Button';
 import styles from './Header.module.scss';
-import Container from '@mui/material/Container';
-import {Link} from "react-router-dom";
 import {routes} from "../../constants/appPath";
-import {useAppDispatch, useAppSelector} from "../../redux/store";
+import Container from '@mui/material/Container';
 import {logout} from "../../redux/slices/auth/auth";
+import {useAppDispatch, useAppSelector} from "../../redux/store";
 
 export const Header: FC = () => {
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const dispatch = useAppDispatch()
-
 
     const onClickLogout = () => {
         dispatch(logout())
@@ -27,7 +26,7 @@ export const Header: FC = () => {
                     <div className={styles.buttons}>
                         {isAuth ? (
                             <>
-                                <Link to="/posts/create">
+                                <Link to="/add-post">
                                     <Button variant="contained">Написать статью</Button>
                                 </Link>
                                 <Button onClick={onClickLogout} variant="contained" color="error">
