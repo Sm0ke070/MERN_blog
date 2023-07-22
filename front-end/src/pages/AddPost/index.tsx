@@ -1,39 +1,66 @@
 import React, {ChangeEvent, useRef, useState} from 'react';
 import 'easymde/dist/easymde.min.css';
-import {Navigate} from "react-router";
+import {Navigate, useNavigate} from "react-router";
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import styles from './AddPost.module.scss';
 import SimpleMDE from "react-simplemde-editor";
 import TextField from '@mui/material/TextField';
 import {useAppSelector} from "../../redux/store";
+import axios from "../../axios";
 
 export const AddPost = () => {
 
-    const imageUrl = ''
-    const isAuth = useAppSelector(state => state.auth.isAuth)
-    const [value, setValue] = useState('')
-    const [title, setTitle] = useState('')
-    const [tags, setTags] = useState('')
+    const navigate = useNavigate()
     const inputFileRef = useRef<HTMLInputElement | null>(null)
+    const [imageUrl, setImageUrl] = useState('')
+    const isAuth = useAppSelector(state => state.auth.isAuth)
+    const [text, setText] = useState('')
+    const [title, setTitle] = useState('')
+    const [tags, setTags] = useState<string | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
         try {
             const formData = new FormData()
             const file = event.target.files
-            if (file) return formData.append('image', file[0])
-
+            console.log(file, 'FILE')
+            if (file) {
+                formData.append('image', file[0])
+                const {data} = await axios.post('/upload', formData)
+                setImageUrl(data.url)
+            }
         } catch (err) {
-
+            alert('Ошибка при загрузке файла!')
+            console.warn(err)
         }
     }
 
     const onClickRemoveImage = () => {
+        setImageUrl('')
     }
 
     const onChange = React.useCallback((value: string) => {
-        setValue(value);
+        setText(value);
     }, [])
+
+    const onSubmit = async () => {
+        try {
+            setIsLoading(true)
+            const fields = {
+                title,
+                imageUrl,
+                tags: tags?.split(','),
+                text
+            }
+            const {data} = await axios.post('/posts', fields)
+            const id = data._id
+            navigate(`/posts/${id}`)
+        } catch (err) {
+            alert('Ошибка при создании статьи!')
+            console.warn(err)
+        }
+    }
 
     const options = React.useMemo(
         () => ({
@@ -61,12 +88,13 @@ export const AddPost = () => {
             </Button>
             <input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden/>
             {imageUrl && (
-                <Button variant="contained" color="error" onClick={onClickRemoveImage}>
-                    Удалить
-                </Button>
-            )}
-            {imageUrl && (
-                <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt="Uploaded"/>
+                <>
+                    <Button variant="contained" color="error" onClick={onClickRemoveImage}>
+                        Удалить
+                    </Button>
+                    <img className={styles.image} src={`http://localhost:4444/${imageUrl}`} alt="Uploaded"/>
+                </>
+
             )}
             <br/>
             <br/>
@@ -79,9 +107,9 @@ export const AddPost = () => {
                 fullWidth
             />
             <TextField classes={{root: styles.tags}} variant="standard" placeholder="Тэги" fullWidth/>
-            <SimpleMDE className={styles.editor} value={value} onChange={onChange} options={options as any}/> //FIX
+            <SimpleMDE className={styles.editor} value={text} onChange={onChange} options={options as any}/> //FIX
             <div className={styles.buttons}>
-                <Button size="large" variant="contained">
+                <Button onClick={onSubmit} size="large" variant="contained">
                     Опубликовать
                 </Button>
                 <a href="/">

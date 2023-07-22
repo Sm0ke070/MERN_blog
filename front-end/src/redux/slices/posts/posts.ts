@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "../../../axios";
-import {AxiosResponse} from "axios";
 import {Status} from "../auth/types";
 
 export interface IFetchPosts {
@@ -20,12 +19,16 @@ export interface IFetchPosts {
 }
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-    const res = await axios.get<AxiosResponse, any>('/posts')
+    const res = await axios.get<any, any>('/posts') //FIX any
     return res.data
 })
-export const fetchTags = createAsyncThunk('fetchTags', async () => {
-    const res = await axios.get<any, any>('/tags')
+export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
+    const res = await axios.get<any, any>('/tags') //FIX any
     return res.data
+})
+export const deletePosts = createAsyncThunk('posts/deletePosts', async (id: string) => {
+    const res = await axios.delete<any, any>(`/posts/${id}`) //FIX any
+    return res
 })
 
 
@@ -57,7 +60,7 @@ const postsSlices = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            //POSTS
+            //FETCH POSTS
             .addCase(fetchPosts.pending, (state) => {
                 state.posts.items = []
                 state.posts.status = Status.LOADING
@@ -82,6 +85,20 @@ const postsSlices = createSlice({
             .addCase(fetchTags.rejected, (state) => {
                 state.tags.items = []
                 state.tags.status = Status.ERROR
+            })
+            //DELETE POSTS
+            .addCase(deletePosts.pending, (state) => {
+                //state.posts.status = Status.LOADING
+                //FIX мб убрать пендинг/фуллвилд/реджект
+            })
+            .addCase(deletePosts.fulfilled, (state, action) => {
+                state.posts.status = Status.SUCCESS
+                state.posts.items = state.posts.items.filter((obj) => obj._id !== action.meta.arg)
+                //FIX
+            })
+            .addCase(deletePosts.rejected, (state) => {
+                state.posts.status = Status.ERROR
+                //FIX
             })
     }
 })

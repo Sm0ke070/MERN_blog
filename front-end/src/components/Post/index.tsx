@@ -9,25 +9,27 @@ import {UserInfo} from '../UserInfo';
 import {PostSkeleton} from './Skeleton';
 import {Link} from "react-router-dom";
 import styles from './Post.module.scss';
-import {IFetchAuth} from "../../redux/slices/auth/auth";
+import {useAppDispatch} from "../../redux/store";
+import {deletePosts} from "../../redux/slices/posts/posts";
+import ReactMarkdown from "react-markdown";
 
 type PostPropsType = {
-    id?: string
-    title?: string
-    createdAt?: string
-    imageUrl?: string
-    user?: {
+    id: string
+    title: string
+    createdAt: string
+    imageUrl: string
+    user: {
         _id: string
         fullName: string
         email: string
     }
-    viewsCount?: number
-    commentsCount?: number
-    tags?: string[]
-    children?: any
-    isFullPost?: boolean
-    isLoading?: boolean
-    isEditable?: boolean
+    viewsCount: number
+    commentsCount?: number //FIX
+    tags: string[]
+    children: any //FIX
+    isFullPost?: boolean //FIX
+    isLoading?: boolean //FIX
+    isEditable?: boolean //FIX
 }
 export const Post: FC<PostPropsType> = ({
                                             id,
@@ -43,11 +45,16 @@ export const Post: FC<PostPropsType> = ({
                                             isLoading,
                                             isEditable,
                                         }) => {
+
+    const dispatch = useAppDispatch()
+
     if (isLoading) {
         return <PostSkeleton/>;
     }
 
     const onClickRemove = () => {
+        console.log(id)
+        dispatch(deletePosts(id))
     };
 
     return (
@@ -85,6 +92,7 @@ export const Post: FC<PostPropsType> = ({
                         ))}
                     </ul>
                     {children && <div className={styles.content}>{children}</div>}
+                    {/*{children && <div className={styles.content}><ReactMarkdown children={children}/></div>}*/}
                     <ul className={styles.postDetails}>
                         <li>
                             <EyeIcon/>

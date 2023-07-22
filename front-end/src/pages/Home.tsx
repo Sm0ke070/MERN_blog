@@ -42,7 +42,7 @@ export const Home: FC = () => {
                                 viewsCount={obj.viewsCount}
                                 children={obj.text}
                                 title={obj.title}
-                                imageUrl={obj.imageUrl}
+                                imageUrl={obj.imageUrl ? `http://localhost:4444/${obj.imageUrl}` : ''}
                                 isEditable={userData?._id === obj.user._id}
                             />
                         )

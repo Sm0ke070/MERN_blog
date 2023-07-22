@@ -3,6 +3,8 @@ import {useParams} from "react-router";
 import React, {useEffect, useState} from "react";
 import {IFetchPosts} from "../redux/slices/posts/posts";
 import {Post, Index, CommentsBlock} from "../components";
+import {PostSkeleton} from "../components/Post/Skeleton";
+import ReactMarkdown from "react-markdown";
 
 export const FullPost = () => {
     const [data, setData] = useState<IFetchPosts | null>(null)
@@ -20,25 +22,25 @@ export const FullPost = () => {
     }, [])
 
     if (isLoading) {
-        return <Post isLoading={isLoading}/>
+        return <PostSkeleton/>
     }
 
     return (
         <>
-            <Post
-                id={data?._id}
-                title={data?.title}
-                imageUrl={data?.imageUrl}
-                user={data?.user}
-                viewsCount={data?.viewsCount}
+            {data && <Post
+                createdAt={data.createdAt}
+                id={data._id}
+                title={data.title}
+                imageUrl={data.imageUrl ? `http://localhost:4444/${data.imageUrl}` : ''}
+                user={data.user}
+                viewsCount={data.viewsCount}
                 commentsCount={3}
-                tags={data?.tags}
+                tags={data.tags}
                 isFullPost
             >
-                <p>
-                    {data?.text}
-                </p>
-            </Post>
+                <p>{data.text}</p>
+                {/*<ReactMarkdown children={data.text}/>*/}
+            </Post>}
             <CommentsBlock
                 items={[
                     {

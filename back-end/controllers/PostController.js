@@ -30,6 +30,7 @@ export const getAllPosts = async (req, res) => {
         })
     }
 }
+
 export const getOnePost = async (req, res) => {
     try {
         const postId = req.params.id
@@ -66,6 +67,7 @@ export const removePost = async (req, res) => {
         if (findPost) {
             await PostModel.deleteOne(findPost)
             return res.json({
+                postId: findPost._id,
                 success: true
             })
         } else {
