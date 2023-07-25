@@ -24,7 +24,7 @@ export const AddPost = () => {
         try {
             const formData = new FormData()
             const file = event.target.files
-            console.log(file, 'FILE')
+
             if (file) {
                 formData.append('image', file[0])
                 const {data} = await axios.post('/upload', formData)
@@ -48,12 +48,13 @@ export const AddPost = () => {
         try {
             setIsLoading(true)
             const fields = {
-                title,
+                title: title?.trim(),
                 imageUrl,
-                tags: tags?.split(','),
+                tags: tags?.trim(),
                 text
             }
             const {data} = await axios.post('/posts', fields)
+            console.log(fields, 'tags')
             const id = data._id
             navigate(`/posts/${id}`)
         } catch (err) {
@@ -106,8 +107,16 @@ export const AddPost = () => {
                 onChange={(e) => setTitle(e.currentTarget.value)}
                 fullWidth
             />
-            <TextField classes={{root: styles.tags}} variant="standard" placeholder="Тэги" fullWidth/>
-            <SimpleMDE className={styles.editor} value={text} onChange={onChange} options={options as any}/> //FIX
+            <TextField classes={{root: styles.tags}}
+                       variant="standard"
+                       onChange={(e) => setTags(e.target.value)}
+                       placeholder="Тэги" fullWidth/>
+
+            <SimpleMDE className={styles.editor}
+                       value={text}
+                       onChange={onChange}
+                       options={options as any}/> {/* FIX */}
+
             <div className={styles.buttons}>
                 <Button onClick={onSubmit} size="large" variant="contained">
                     Опубликовать

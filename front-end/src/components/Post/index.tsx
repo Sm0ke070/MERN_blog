@@ -53,7 +53,6 @@ export const Post: FC<PostPropsType> = ({
     }
 
     const onClickRemove = () => {
-        console.log(id)
         dispatch(deletePosts(id))
     };
 

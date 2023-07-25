@@ -27,8 +27,7 @@ export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
     return res.data
 })
 export const deletePosts = createAsyncThunk('posts/deletePosts', async (id: string) => {
-    const res = await axios.delete<any, any>(`/posts/${id}`) //FIX any
-    return res
+    await axios.delete<any, any>(`/posts/${id}`) //FIX any
 })
 
 
