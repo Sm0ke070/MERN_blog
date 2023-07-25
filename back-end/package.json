@@ -8,7 +8,7 @@
     "start": "node index.js",
     "start:dev": "nodemon index.js"
   },
-  "author": "",
+  "author": "Sm0ke070",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
