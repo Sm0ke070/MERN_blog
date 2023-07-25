@@ -1,6 +1,6 @@
-import React, {ChangeEvent, useRef, useState} from 'react';
+import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import 'easymde/dist/easymde.min.css';
-import {Navigate, useNavigate} from "react-router";
+import {Navigate, useNavigate, useParams} from "react-router";
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import styles from './AddPost.module.scss';
@@ -12,13 +12,34 @@ import axios from "../../axios";
 export const AddPost = () => {
 
     const navigate = useNavigate()
+    const {id} = useParams()
     const inputFileRef = useRef<HTMLInputElement | null>(null)
     const [imageUrl, setImageUrl] = useState('')
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const [text, setText] = useState('')
     const [title, setTitle] = useState('')
-    const [tags, setTags] = useState<string | null>(null)
-    const [isLoading, setIsLoading] = useState(false)
+    const [tags, setTags] = useState<string>('') //FIX
+    const isEditing = Boolean(id)
+
+    useEffect(() => {
+        if (id) {
+            axios.get(`/posts/${id}`)
+                .then((res) => {
+                    console.log(res.data, 'DATA')
+                    setTitle(res.data.title)
+                    setText(res.data.text)
+                    setTags(res.data.tags)
+                    setImageUrl(res.data.imageUrl)
+                })
+                .catch((err) => {
+                    alert('Ошибка при создании статьи!')
+                    console.warn(err)
+                })
+
+
+        }
+    }, [])
+
 
     const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
         try {
@@ -46,19 +67,24 @@ export const AddPost = () => {
 
     const onSubmit = async () => {
         try {
-            setIsLoading(true)
+            console.log(Array.isArray(tags), 'TAGS:', tags) //FIX
             const fields = {
                 title: title?.trim(),
                 imageUrl,
-                tags: tags?.trim(),
+                tags: tags.toString(),
                 text
             }
-            const {data} = await axios.post('/posts', fields)
+
+            const {data} = isEditing
+                ? await axios.patch(`/posts/${id}`, fields)
+                : await axios.post('/posts', fields)
+
             console.log(fields, 'tags')
-            const id = data._id
-            navigate(`/posts/${id}`)
+
+            const postId = isEditing ? id : data._id
+            navigate(`/posts/${postId}`)
         } catch (err) {
-            alert('Ошибка при создании статьи!')
+            //alert('Ошибка при создании статьи2!')
             console.warn(err)
         }
     }
@@ -109,6 +135,7 @@ export const AddPost = () => {
             />
             <TextField classes={{root: styles.tags}}
                        variant="standard"
+                       value={tags}
                        onChange={(e) => setTags(e.target.value)}
                        placeholder="Тэги" fullWidth/>
 
@@ -119,7 +146,7 @@ export const AddPost = () => {
 
             <div className={styles.buttons}>
                 <Button onClick={onSubmit} size="large" variant="contained">
-                    Опубликовать
+                    {isEditing ? 'Сохранить' : 'Опубликовать'}
                 </Button>
                 <a href="/">
                     <Button size="large">Отмена</Button>

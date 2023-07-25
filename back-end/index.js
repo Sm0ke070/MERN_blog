@@ -46,7 +46,7 @@ app.get('/tags', PostController.getLastTags)
 app.get('/posts', PostController.getAllPosts)
 app.get('/posts/tags', PostController.getLastTags)
 app.get('/posts/:id', PostController.getOnePost)
-app.post('/posts', checkAuth, postCreateValidation, PostController.createPost) //handleValidationErrors
+app.post('/posts', checkAuth, postCreateValidation, PostController.createPost) //handleValidationErrors FIX
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update)
 app.delete('/posts/:id', checkAuth, PostController.removePost)
 
