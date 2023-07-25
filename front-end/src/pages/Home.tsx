@@ -31,7 +31,7 @@ export const Home: FC = () => {
                 <Grid xs={8} item>
                     {isPostsLoading
                         ?
-                        [...new Array(4)].map(() => <PostSkeleton/>)
+                        [...new Array(4)].map((_, i) => <PostSkeleton key={i}/>)
                         :
                         posts.items.map(obj => <Post
                                 key={obj._id}
