@@ -6,11 +6,13 @@ import {UserController, PostController} from './controllers/index.js'
 import {checkAuth, handleValidationErrors} from './utils/index.js'
 import cors from "cors";
 
+//'mongodb+srv://smoke070:qqqqqq@cluster1.bbwa56v.mongodb.net/blog?retryWrites=true&w=majority'  FIX
+
 mongoose
-    .connect('mongodb+srv://smoke070:qqqqqq@cluster1.bbwa56v.mongodb.net/blog?retryWrites=true&w=majority')
+    .connect(process.env.MONGODB_URI)
     .then(() => console.log('DB connect OK'))
     .catch((err) => console.log('DB Error', err))
-
+//process.env.MONGODB_URI
 const app = express()
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
@@ -50,7 +52,9 @@ app.post('/posts', checkAuth, postCreateValidation, PostController.createPost) /
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update)
 app.delete('/posts/:id', checkAuth, PostController.removePost)
 
-app.listen(4444, (err) => {
+
+//process.env.PORT || 4444
+app.listen(process.env.PORT || 4444, (err) => {
     if (err) {
         console.log('ERROR')
     } else {
