@@ -9,7 +9,7 @@ import cors from "cors";
 //'mongodb+srv://smoke070:qqqqqq@cluster1.bbwa56v.mongodb.net/blog?retryWrites=true&w=majority'  FIX
 //process.env.MONGODB_URI
 mongoose
-    .connect('mongodb+srv://smoke070:qqqqqq@cluster1.bbwa56v.mongodb.net/blog?retryWrites=true&w=majority')
+    .connect(process.env.MONGODB_URI)
     .then(() => console.log('DB connect OK'))
     .catch((err) => console.log('DB Error', err))
 //process.env.MONGODB_URI
@@ -52,12 +52,10 @@ app.post('/posts', checkAuth, postCreateValidation, PostController.createPost) /
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update)
 app.delete('/posts/:id', checkAuth, PostController.removePost)
 
-
-//process.env.PORT || 4444
 app.listen(process.env.PORT || 4444, (err) => {
     if (err) {
-        console.log('ERROR')
+        console.log('server error')
     } else {
-        console.log('server OK')
+        console.log('server connect OK')
     }
 })

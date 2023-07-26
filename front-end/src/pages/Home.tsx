@@ -21,8 +21,6 @@ export const Home: FC = () => {
     }, [])
 
 
-
-
     return (
         <>
             <Tabs style={{marginBottom: 15}} value={0} aria-label="basic tabs example">
@@ -44,7 +42,7 @@ export const Home: FC = () => {
                                 viewsCount={obj.viewsCount}
                                 children={obj.text}
                                 title={obj.title}
-                                imageUrl={obj.imageUrl ? `http://localhost:4444/${obj.imageUrl}` : ''}
+                                imageUrl={obj.imageUrl ? `${process.env.REACT_APP_API_URL}${obj.imageUrl}` : ''}
                                 isEditable={userData?._id === obj.user._id}
                             />
                         )
