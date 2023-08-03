@@ -9,7 +9,7 @@ import cors from "cors";
 //'mongodb+srv://smoke070:qqqqqq@cluster1.bbwa56v.mongodb.net/blog?retryWrites=true&w=majority'  FIX
 //process.env.MONGODB_URI
 mongoose
-    .connect(process.env.MONGODB_URI)
+    .connect(process.env.MONGODB_URI || 'mongodb+srv://smoke070:qqqqqq@cluster1.bbwa56v.mongodb.net/blog?retryWrites=true&w=majority')
     .then(() => console.log('DB connect OK'))
     .catch((err) => console.log('DB Error', err))
 //process.env.MONGODB_URI

@@ -97,7 +97,7 @@ const postsSlices = createSlice({
             })
             .addCase(deletePosts.rejected, (state) => {
                 state.posts.status = Status.ERROR
-                //FIX
+                //FI X
             })
     }
 })
