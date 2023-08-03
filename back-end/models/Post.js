@@ -12,11 +12,15 @@ const PostSchema = new mongoose.Schema({
     },
     tags: {
         type: Array,
-        default: [],
+        default: null,
     },
     viewsCount: {
         type: Number,
         default: 0,
+    },
+    createdAt: {
+        type: Date,
+        default: new Date()
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

@@ -18,7 +18,7 @@ export const AddPost = () => {
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const [text, setText] = useState('')
     const [title, setTitle] = useState('')
-    const [tags, setTags] = useState<string>('') //FIX
+    const [tags, setTags] = useState<string | null>(null)
     const isEditing = Boolean(id)
 
     useEffect(() => {
@@ -71,7 +71,7 @@ export const AddPost = () => {
             const fields = {
                 title: title?.trim(),
                 imageUrl,
-                tags: tags.toString(),
+                tags: tags?.toString(),
                 text
             }
 
