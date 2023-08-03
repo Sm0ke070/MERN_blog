@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "../../../axios";
-import {Status} from "../auth/types";
+import {SortBy, Status} from "../auth/types";
+import {RootState} from "../../store";
 
 export interface IFetchPosts {
     _id: string
@@ -18,8 +19,12 @@ export interface IFetchPosts {
     updatedAt: string
 }
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-    const res = await axios.get<any, any>('/posts') //FIX any
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (_, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState
+    const sortBy = state.posts.sortBy
+
+    console.log(sortBy)
+    const res = await axios.get<any, any>(`/posts?sortBy=${sortBy}`) //FIX any
     return res.data
 })
 export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
@@ -32,6 +37,7 @@ export const deletePosts = createAsyncThunk('posts/deletePosts', async (id: stri
 
 
 export interface IPostsSlicesState {
+    sortBy: SortBy
     posts: {
         items: IFetchPosts[]
         status: Status
@@ -43,6 +49,7 @@ export interface IPostsSlicesState {
 }
 
 const initialState: IPostsSlicesState = {
+    sortBy: SortBy.NEW,
     posts: {
         items: [],
         status: Status.LOADING
@@ -56,7 +63,11 @@ const initialState: IPostsSlicesState = {
 const postsSlices = createSlice({
     initialState,
     name: 'posts',
-    reducers: {},
+    reducers: {
+        setSortBy(state, action: PayloadAction<SortBy>) {
+            state.sortBy = action.payload
+        }
+    },
     extraReducers: (builder) => {
         builder
             //FETCH POSTS
@@ -101,5 +112,5 @@ const postsSlices = createSlice({
             })
     }
 })
-
+export const {setSortBy} = postsSlices.actions
 export const postsReducer = postsSlices.reducer
