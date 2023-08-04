@@ -21,15 +21,16 @@ export const createPost = async (req, res) => {
 export const getAllPosts = async (req, res) => {
     try {
         let sortBy = req.query.sortBy
-        let sortOptions = {}
-        if (sortBy === 0) {
-            sortOptions = {createdAt: 1}
+        let sortOptions
+
+        if (sortBy === '0') {
+            sortOptions = {createdAt: -1}
         } else {
             sortOptions = {viewsCount: -1}
         }
 
         const posts = await PostModel.find()
-            .sort((sortOptions))
+            .sort(sortOptions)
             .populate('user')
             .exec()
 
