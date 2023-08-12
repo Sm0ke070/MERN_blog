@@ -19,7 +19,7 @@ export const AddPost = () => {
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const [text, setText] = useState('')
     const [title, setTitle] = useState('')
-    const [tags, setTags] = useState('')
+    const [tags, setTags] = useState<string>('')
 
     useEffect(() => {
         if (id) {
@@ -83,7 +83,7 @@ export const AddPost = () => {
             const postId = isEditing ? id : data._id
             navigate(`/posts/${postId}`)
         } catch (err) {
-            //alert('Ошибка при создании статьи2!')
+            alert('Ошибка при создании статьи!')
             console.warn(err)
         }
     }

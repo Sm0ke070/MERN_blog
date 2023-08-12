@@ -42,9 +42,9 @@ export const TagsBlock: FC<TagsBlockPropsType> = ({
                         </React.Fragment>
                     ))
                 ) : (
-                    uniqueTagsArray.map((name, i) => (
+                    uniqueTagsArray.map((name) => (
                         <ListItem
-                            key={i}
+                            key={name}
                             disablePadding
                             style={{
                                 textDecoration: "none",

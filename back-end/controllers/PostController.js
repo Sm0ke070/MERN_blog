@@ -2,11 +2,12 @@ import PostModel from '../models/Post.js'
 
 export const createPost = async (req, res) => {
     try {
+        const tags = req.body.tags ? req.body.tags.split(',') : []
         const doc = new PostModel({
             title: req.body.title,
             text: req.body.text,
             imageUrl: req.body.imageUrl,
-            tags: req.body.tags?.split(','),
+            tags: tags,
             user: req.userId,
         })
         const post = await doc.save()
