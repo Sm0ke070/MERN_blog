@@ -43,6 +43,7 @@ export const Home: FC = () => {
                         posts.items.map(obj => <Post
                                 key={obj._id}
                                 user={obj.user}
+                                commentsCount={obj.comments.length}
                                 createdAt={obj.createdAt}
                                 tags={obj.tags}
                                 id={obj._id}
@@ -77,7 +78,7 @@ export const Home: FC = () => {
                     {/*        },*/}
                     {/*    ]}*/}
                     {/*    isLoading={false}*/}
-                    {/*/>*/} //FIX
+                    {/*/>*/} //FIX comments block
                 </Grid>
             </Grid>
         </>

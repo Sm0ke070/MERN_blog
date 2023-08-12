@@ -3,42 +3,47 @@ import styles from "./AddComment.module.scss";
 import TextField from "@mui/material/TextField";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import {useAppSelector} from "../../redux/store";
+import {useAppDispatch, useAppSelector} from "../../redux/store";
 import axios from "../../axios";
+import {IFetchPosts} from "../../redux/slices/posts/posts";
 
 type AddCommentPropsType = {
     postId?: string
+    setData: (data: IFetchPosts) => void
 }
-export const Index: FC<AddCommentPropsType> = ({postId}) => {
+export const AddComment: FC<AddCommentPropsType> = ({postId, setData}) => {
+
+    const dispatch = useAppDispatch()
     const [commentText, setCommentText] = useState('')
-    const data = useAppSelector(state => state.auth.data)
+    const userData = useAppSelector(state => state.auth.data)
 
     const changeCommentText = (value: string) => {
         setCommentText(value)
 
     }
     const addComment = async () => {
-        await axios.patch(`/posts/comments/${postId}`, {
-            userName: data?.fullName,
+        await axios.patch(`/posts/${postId}/comments`, {
+            userName: userData?.fullName,
             text: commentText,
-            avatarUrl: data?.avatarUrl
+            avatarUrl: userData?.avatarUrl
         })
             .then(() => {
                 setCommentText('')
             })
-        await axios.get(`/posts/${postId}`).then((res) => {
-
-        }).catch((err) => {
-            console.log(err)
-            alert('Ошибка при получении статьи')
-        })
+        await axios.get(`/posts/${postId}`)
+            .then((res) => {
+                setData(res.data)
+            }).catch((err) => {
+                console.log(err)
+                alert('Ошибка при получении статьи')
+            })
     }
     return (
         <>
             <div className={styles.root}>
                 <Avatar
                     classes={{root: styles.avatar}}
-                    src={data?.avatarUrl}
+                    src={userData?.avatarUrl}
                 />
                 <div className={styles.form}>
                     <TextField

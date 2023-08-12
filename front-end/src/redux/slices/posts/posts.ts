@@ -35,7 +35,7 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (_, thunkAP
 })
 export const fetchCurrentPosts = createAsyncThunk('posts/fetchCurrentPosts', async (postId: string) => {
     const res = await axios.get(`/posts/${postId}`)
-    return res.data
+    return res.data //FIX not used func
 })
 
 
@@ -125,7 +125,7 @@ const postsSlices = createSlice({
             })
             .addCase(deletePosts.rejected, (state) => {
                 state.posts.status = Status.ERROR
-                //FI X
+                //FIX
             })
     }
 })

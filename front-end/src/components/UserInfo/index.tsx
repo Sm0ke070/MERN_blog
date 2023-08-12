@@ -12,10 +12,11 @@ type UserInfoPropsType = {
     }
 }
 export const UserInfo: FC<UserInfoPropsType> = ({user, additionalText}) => {
-
+    
     return (
         <div className={styles.root}>
-            <img className={styles.avatar} src={user?.avatarUrl || defaultUserAvatar} alt={user?.fullName}/>
+            <img className={styles.avatar} src={user?.avatarUrl ? user.avatarUrl : defaultUserAvatar}
+                 alt={user?.fullName}/>
             <div className={styles.userDetails}>
                 <span className={styles.userName}>{user?.fullName}</span>
                 <span className={styles.additional}>{additionalText?.slice(0, 10)}</span>

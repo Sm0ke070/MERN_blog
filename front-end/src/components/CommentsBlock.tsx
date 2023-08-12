@@ -14,10 +14,11 @@ type CommentsBlockPropsType = {
     items: Comments[]
     children: any //FIX
     isLoading: boolean
+
 }
 
 export const CommentsBlock: FC<CommentsBlockPropsType> = ({items, children, isLoading = true}) => {
-    console.log(items)
+
     return (
         <SideBlock title="Комментарии">
             <List>

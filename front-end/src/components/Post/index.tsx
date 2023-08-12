@@ -24,7 +24,7 @@ type PostPropsType = {
         email: string
     }
     viewsCount: number
-    commentsCount?: number //FIX
+    commentsCount: number
     tags: string[]
     children: any //FIX
     isFullPost?: boolean //FIX

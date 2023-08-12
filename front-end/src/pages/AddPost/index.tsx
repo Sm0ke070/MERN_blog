@@ -19,7 +19,7 @@ export const AddPost = () => {
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const [text, setText] = useState('')
     const [title, setTitle] = useState('')
-    const [tags, setTags] = useState<string | null>(null)
+    const [tags, setTags] = useState('')
 
     useEffect(() => {
         if (id) {
