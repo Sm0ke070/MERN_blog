@@ -8,14 +8,16 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import Skeleton from "@mui/material/Skeleton";
+import {Comments} from "../redux/slices/posts/posts";
 
 type CommentsBlockPropsType = {
-    items: Array<any>
-    children: any
-    isLoading: any
+    items: Comments[]
+    children: any //FIX
+    isLoading: boolean
 }
 
 export const CommentsBlock: FC<CommentsBlockPropsType> = ({items, children, isLoading = true}) => {
+    console.log(items)
     return (
         <SideBlock title="Комментарии">
             <List>
@@ -26,7 +28,7 @@ export const CommentsBlock: FC<CommentsBlockPropsType> = ({items, children, isLo
                                 {isLoading ? (
                                     <Skeleton variant="circular" width={40} height={40}/>
                                 ) : (
-                                    <Avatar alt={obj.user.fullName} src={obj.user.avatarUrl}/>
+                                    <Avatar alt={obj.userName} src={obj.avatarUrl}/>
                                 )}
                             </ListItemAvatar>
                             {isLoading ? (
@@ -36,7 +38,7 @@ export const CommentsBlock: FC<CommentsBlockPropsType> = ({items, children, isLo
                                 </div>
                             ) : (
                                 <ListItemText
-                                    primary={obj.user.fullName}
+                                    primary={obj.userName}
                                     secondary={obj.text}
                                 />
                             )}

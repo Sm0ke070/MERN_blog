@@ -13,13 +13,13 @@ export const AddPost = () => {
 
     const navigate = useNavigate()
     const {id} = useParams()
+    const isEditing = Boolean(id)
     const inputFileRef = useRef<HTMLInputElement | null>(null)
     const [imageUrl, setImageUrl] = useState('')
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const [text, setText] = useState('')
     const [title, setTitle] = useState('')
     const [tags, setTags] = useState<string | null>(null)
-    const isEditing = Boolean(id)
 
     useEffect(() => {
         if (id) {
@@ -35,10 +35,8 @@ export const AddPost = () => {
                     alert('Ошибка при создании статьи!')
                     console.warn(err)
                 })
-
-
         }
-    }, [])
+    }, [id])
 
 
     const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -67,11 +65,12 @@ export const AddPost = () => {
 
     const onSubmit = async () => {
         try {
-            console.log(Array.isArray(tags), 'TAGS:', tags) //FIX
+            if (text.length < 10) return alert('Текст статьи не может быть меньше 10 символов!')
+
             const fields = {
                 title: title?.trim(),
                 imageUrl,
-                tags: tags?.toString(),
+                tags: tags,
                 text
             }
 

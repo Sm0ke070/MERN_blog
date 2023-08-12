@@ -8,6 +8,7 @@ export interface IFetchPosts {
     title: string
     text: string
     imageUrl: string
+    comments: Comments[]
     tags: string[]
     viewsCount: number
     user: {
@@ -19,6 +20,11 @@ export interface IFetchPosts {
     updatedAt: string
 }
 
+export interface Comments {
+    fullName: string
+    text: string
+}
+
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (_, thunkAPI) => {
     const state = thunkAPI.getState() as RootState
     const sortBy = state.posts.sortBy
@@ -27,6 +33,12 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (_, thunkAP
     const res = await axios.get<any, any>(`/posts?sortBy=${sortBy}`) //FIX any
     return res.data
 })
+export const fetchCurrentPosts = createAsyncThunk('posts/fetchCurrentPosts', async (postId: string) => {
+    const res = await axios.get(`/posts/${postId}`)
+    return res.data
+})
+
+
 export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
     const res = await axios.get<any, any>('/tags') //FIX any
     return res.data
@@ -66,6 +78,11 @@ const postsSlices = createSlice({
     reducers: {
         setSortBy(state, action: PayloadAction<SortBy>) {
             state.sortBy = action.payload
+        },
+        setSortByTagName(state, action: PayloadAction<string>) {
+            const posts = state.posts.items
+            state.posts.items = posts.filter((p) => p.tags.includes('react'))
+            console.log()
         }
     },
     extraReducers: (builder) => {
@@ -112,5 +129,5 @@ const postsSlices = createSlice({
             })
     }
 })
-export const {setSortBy} = postsSlices.actions
+export const {setSortBy, setSortByTagName} = postsSlices.actions
 export const postsReducer = postsSlices.reducer

@@ -9,6 +9,8 @@ import ListItemText from "@mui/material/ListItemText";
 import Skeleton from "@mui/material/Skeleton";
 
 import {SideBlock} from "./SideBlock";
+import {useAppDispatch} from "../redux/store";
+import {setSortByTagName} from "../redux/slices/posts/posts";
 
 type TagsBlockPropsType = {
     items: string[]
@@ -16,6 +18,12 @@ type TagsBlockPropsType = {
 }
 
 export const TagsBlock: FC<TagsBlockPropsType> = ({items, isLoading = true}) => {
+
+    const dispatch = useAppDispatch()
+    const sortByTagName = (name: string) => {
+        dispatch(setSortByTagName(name))
+    }
+
     return (
         <SideBlock title="Тэги">
             <List>
@@ -32,10 +40,10 @@ export const TagsBlock: FC<TagsBlockPropsType> = ({items, isLoading = true}) => 
                     ))
                 ) : (
                     items.map((name, i) => (
-                        <a
+                        <span
                             key={name}
                             style={{textDecoration: "none", color: "black"}}
-                            href={`/tags/${name}`}
+                            onClick={() => sortByTagName(name)}
                         >
                             <ListItem disablePadding>
                                 <ListItemButton>
@@ -45,7 +53,7 @@ export const TagsBlock: FC<TagsBlockPropsType> = ({items, isLoading = true}) => 
                                     <ListItemText primary={name}/>
                                 </ListItemButton>
                             </ListItem>
-                        </a>
+                        </span>
                     ))
                 )}
 

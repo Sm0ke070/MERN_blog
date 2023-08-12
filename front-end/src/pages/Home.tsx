@@ -58,26 +58,26 @@ export const Home: FC = () => {
                 </Grid>
                 <Grid xs={4} item>
                     <TagsBlock items={tags.items} isLoading={isTagsLoading}/>
-                    <CommentsBlock
-                        children={''}
-                        items={[
-                            {
-                                user: {
-                                    fullName: 'Никита Пулькин',
-                                    avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-                                },
-                                text: 'Это тестовый комментарий',
-                            },
-                            {
-                                user: {
-                                    fullName: 'Иван Иванов',
-                                    avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
-                                },
-                                text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
-                            },
-                        ]}
-                        isLoading={false}
-                    />
+                    {/*<CommentsBlock*/}
+                    {/*    children={''}*/}
+                    {/*    items={[*/}
+                    {/*        {*/}
+                    {/*            user: {*/}
+                    {/*                fullName: 'Никита Пулькин',*/}
+                    {/*                avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',*/}
+                    {/*            },*/}
+                    {/*            text: 'Это тестовый комментарий',*/}
+                    {/*        },*/}
+                    {/*        {*/}
+                    {/*            user: {*/}
+                    {/*                fullName: 'Иван Иванов',*/}
+                    {/*                avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',*/}
+                    {/*            },*/}
+                    {/*            text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',*/}
+                    {/*        },*/}
+                    {/*    ]}*/}
+                    {/*    isLoading={false}*/}
+                    {/*/>*/} //FIX
                 </Grid>
             </Grid>
         </>

@@ -23,6 +23,7 @@ export const getAllPosts = async (req, res) => {
         let sortBy = req.query.sortBy
         let sortOptions
 
+
         if (sortBy === '0') {
             sortOptions = {createdAt: -1}
         } else {
@@ -42,11 +43,32 @@ export const getAllPosts = async (req, res) => {
         })
     }
 }
+export const addComment = async (req, res) => {
+    try {
+        const postId = req.params.id
+        const updatedPost = await PostModel.findOneAndUpdate(
+            {_id: postId},
+            {$push: {comments: req.body}},
+            {returnDocument: 'after'}
+        )
 
+        if (!updatedPost) {
+            return res.status(404).json({
+                message: 'Статья не найдена'
+            })
+        }
+        res.json(updatedPost)
+
+    } catch (err) {
+        res.status(500).json({
+            message: 'Не удалось добавить комментарий'
+        })
+    }
+}
 export const getOnePost = async (req, res) => {
     try {
         const postId = req.params.id
-        console.log(postId)
+
         const updatedPost = await PostModel.findOneAndUpdate(
             {_id: postId},
             {$inc: {viewsCount: 1}},
@@ -94,6 +116,8 @@ export const removePost = async (req, res) => {
         })
     }
 }
+
+
 export const update = async (req, res) => {
     try {
         const postId = req.params.id
@@ -120,8 +144,8 @@ export const getLastTags = async (req, res) => {
     try {
         const posts = await PostModel.find().limit(5).exec()
         const tags = posts.map(obj => obj.tags).flat().slice(0, 5)
-
         res.json(tags)
+
     } catch (err) {
         console.log(err)
         res.status(500).json({

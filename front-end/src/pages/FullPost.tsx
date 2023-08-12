@@ -1,29 +1,35 @@
 import axios from "../axios";
 import {useParams} from "react-router";
 import React, {useEffect, useState} from "react";
-import {IFetchPosts} from "../redux/slices/posts/posts";
+import {fetchCurrentPosts, IFetchPosts} from "../redux/slices/posts/posts";
 import {Post, Index, CommentsBlock} from "../components";
 import {PostSkeleton} from "../components/Post/Skeleton";
-import ReactMarkdown from "react-markdown";
+import {useAppDispatch, useAppSelector} from "../redux/store";
 
 export const FullPost = () => {
+    const dispatch = useAppDispatch()
     const [data, setData] = useState<IFetchPosts | null>(null)
     const [isLoading, setIsLoading] = useState(true)
+    const isAuth = useAppSelector(state => state.auth.isAuth)
     const {id} = useParams()
 
     useEffect(() => {
-        axios.get(`/posts/${id}`).then((res) => {
-            setData(res.data)
-            setIsLoading(false)
-        }).catch((err) => {
+        if (!id) return
+        dispatch(fetchCurrentPosts(id))
+            .then((res) => {
+                console.log(res.payload, 'RES')
+                setData(res.payload)
+                setIsLoading(false)
+            }).catch((err) => {
             console.log(err)
             alert('Ошибка при получении статьи')
         })
-    }, [])
+    }, [id])
 
     if (isLoading) {
         return <PostSkeleton/>
     }
+
 
     return (
         <>
@@ -41,26 +47,13 @@ export const FullPost = () => {
                 <p>{data.text}</p>
                 {/*<ReactMarkdown children={data.text}/>*/}
             </Post>}
+
             <CommentsBlock
-                items={[
-                    {
-                        user: {
-                            fullName: "Вася Пупкин",
-                            avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
-                        },
-                        text: "Это тестовый комментарий 555555",
-                    },
-                    {
-                        user: {
-                            fullName: "Иван Иванов",
-                            avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
-                        },
-                        text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
-                    },
-                ]}
-                isLoading={false}
+                // @ts-ignore //FIX
+                items={data?.comments}
+                isLoading={isLoading}
             >
-                <Index/>
+                {isAuth && <Index postId={id}/>}
             </CommentsBlock>
         </>
     );

@@ -28,6 +28,7 @@ export const fetchRegister = createAsyncThunk<IFetchAuth, fetchRegisterParams>('
 export interface IFetchAuth {
     _id: string
     fullName: string
+    avatarUrl: string
     email: string
     createdAt: Date
     updatedAt: Date
