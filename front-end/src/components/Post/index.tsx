@@ -26,7 +26,7 @@ type PostPropsType = {
     viewsCount: number
     commentsCount: number
     tags: string[]
-    children: any //FIX
+    children: string //FIX
     isFullPost?: boolean //FIX
     isLoading?: boolean //FIX
     isEditable?: boolean //FIX
@@ -90,8 +90,8 @@ export const Post: FC<PostPropsType> = ({
                             </li>
                         ))}
                     </ul>
-                    {children && <div className={styles.content}>{children}</div>}
-                    {/*{children && <div className={styles.content}><ReactMarkdown children={children}/></div>}*/}
+                    {/*{children && <div className={styles.content}>{children}</div>}*/}
+                    {children && <div className={styles.content}><ReactMarkdown children={children}/></div>}
                     <ul className={styles.postDetails}>
                         <li>
                             <EyeIcon/>

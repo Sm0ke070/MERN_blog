@@ -5,6 +5,7 @@ import {IFetchPosts} from "../redux/slices/posts/posts";
 import {Post, AddComment, CommentsBlock} from "../components";
 import {PostSkeleton} from "../components/Post/Skeleton";
 import {useAppDispatch, useAppSelector} from "../redux/store";
+import ReactMarkdown from "react-markdown";
 
 export const FullPost = () => {
     const dispatch = useAppDispatch()
@@ -48,7 +49,7 @@ export const FullPost = () => {
                     tags={data.tags}
                     isFullPost
                 >
-                    <p>{data.text}</p>
+                    {data.text}
                     {/*<ReactMarkdown children={data.text}/>*/}
                 </Post>
 
