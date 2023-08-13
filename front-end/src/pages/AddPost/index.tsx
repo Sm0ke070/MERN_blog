@@ -19,7 +19,7 @@ export const AddPost = () => {
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const [text, setText] = useState('')
     const [title, setTitle] = useState('')
-    const [tags, setTags] = useState<string>('')
+    const [tags, setTags] = useState<string | string[]>('')
 
     useEffect(() => {
         if (id) {
@@ -71,7 +71,7 @@ export const AddPost = () => {
             const fields = {
                 title: title?.trim(),
                 imageUrl,
-                tags: tags?.split(','),
+                tags: Array.isArray(tags) ? tags.join(',') : tags,
                 text
             }
 
@@ -137,7 +137,7 @@ export const AddPost = () => {
                        variant="standard"
                        value={tags}
                        onChange={(e) => setTags(e.target.value)}
-                       placeholder="Тэги" fullWidth/>
+                       placeholder="Укажите Тэги через запятую" fullWidth/>
 
             <SimpleMDE className={styles.editor}
                        value={text}

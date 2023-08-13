@@ -2,7 +2,7 @@ import React, {FC, useEffect} from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
-import {Post, TagsBlock, CommentsBlock} from '../components';
+import {Post, TagsBlock} from '../components';
 import {useAppDispatch, useAppSelector} from "../redux/store";
 import {fetchPosts, fetchTags, setSortBy} from "../redux/slices/posts/posts";
 import {PostSkeleton} from "../components/Post/Skeleton";

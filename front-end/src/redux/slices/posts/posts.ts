@@ -28,9 +28,7 @@ export interface Comments {
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (_, thunkAPI) => {
     const state = thunkAPI.getState() as RootState
     const sortBy = state.posts.sortBy
-
-    console.log(sortBy)
-    const res = await axios.get<any, any>(`/posts?sortBy=${sortBy}`) //FIX any
+    const res = await axios.get<IFetchPosts[]>(`/posts?sortBy=${sortBy}`) //FIX any
     return res.data
 })
 export const fetchCurrentPosts = createAsyncThunk('posts/fetchCurrentPosts', async (postId: string) => {
@@ -40,11 +38,11 @@ export const fetchCurrentPosts = createAsyncThunk('posts/fetchCurrentPosts', asy
 
 
 export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
-    const res = await axios.get<any, any>('/tags') //FIX any
+    const res = await axios.get<string[]>('/tags')
     return res.data
 })
 export const deletePosts = createAsyncThunk('posts/deletePosts', async (id: string) => {
-    await axios.delete<any, any>(`/posts/${id}`) //FIX any
+    await axios.delete<IFetchPosts>(`/posts/${id}`)
 })
 
 
@@ -80,9 +78,7 @@ const postsSlices = createSlice({
             state.sortBy = action.payload
         },
         setSortByTagName(state, action: PayloadAction<string>) {
-            const posts = state.posts.items
-            state.posts.items = posts.filter((p) => p.tags.includes('react'))
-            console.log()
+            //FIX
         }
     },
     extraReducers: (builder) => {

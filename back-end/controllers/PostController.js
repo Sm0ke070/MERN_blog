@@ -2,7 +2,7 @@ import PostModel from '../models/Post.js'
 
 export const createPost = async (req, res) => {
     try {
-        const tags = req.body.tags ? req.body.tags : []
+        const tags = req.body.tags ? req.body.tags.split(',') : []
         const doc = new PostModel({
             title: req.body.title,
             text: req.body.text,
@@ -16,6 +16,29 @@ export const createPost = async (req, res) => {
         console.log(err)
         res.status(500).json({
             message: 'Не удалось создать статью'
+        })
+    }
+}
+export const update = async (req, res) => {
+    try {
+        const tags = req.body.tags ? req.body.tags.split(',') : []
+        const postId = req.params.id
+        await PostModel.updateOne({
+            _id: postId
+        }, {
+            title: req.body.title,
+            text: req.body.text,
+            imageUrl: req.body.imageUrl,
+            user: req.userId,
+            tags: tags
+        })
+        res.json({
+            success: true
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            message: 'Не удалось обновить статью'
         })
     }
 }
@@ -119,32 +142,10 @@ export const removePost = async (req, res) => {
 }
 
 
-export const update = async (req, res) => {
-    try {
-        const postId = req.params.id
-        await PostModel.updateOne({
-            _id: postId
-        }, {
-            title: req.body.title,
-            text: req.body.text,
-            imageUrl: req.body.imageUrl,
-            user: req.userId,
-            tags: req.body.tags
-        })
-        res.json({
-            success: true
-        })
-    } catch (err) {
-        console.log(err)
-        res.status(500).json({
-            message: 'Не удалось обновить статью'
-        })
-    }
-}
 export const getLastTags = async (req, res) => {
     try {
-        const posts = await PostModel.find().limit(5).exec()
-        const tags = posts.map(obj => obj.tags).flat().slice(0, 5)
+        const posts = await PostModel.find().exec()
+        const tags = posts.map(obj => obj.tags).flat()
         res.json(tags)
 
     } catch (err) {

@@ -1,4 +1,4 @@
-export * from "./TagsBlock";
+export * from "./TagsBlock/TagsBlock";
 export * from "./CommentsBlock";
 export * from "./Post";
 export * from "./AddComment/AddComment";

@@ -6,9 +6,10 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import TagIcon from "@mui/icons-material/Tag";
 import ListItemText from "@mui/material/ListItemText";
 import Skeleton from "@mui/material/Skeleton";
-import {SideBlock} from "./SideBlock";
-import {useAppDispatch} from "../redux/store";
-import {setSortByTagName} from "../redux/slices/posts/posts";
+import {SideBlock} from "../SideBlock";
+import {useAppDispatch} from "../../redux/store";
+import {setSortByTagName} from "../../redux/slices/posts/posts";
+import style from './TagsBlock.module.scss'
 
 type TagsBlockPropsType = {
     items: string[];
@@ -27,9 +28,9 @@ export const TagsBlock: FC<TagsBlockPropsType> = ({
 
     return (
         <SideBlock title="Тэги">
-            <List>
+            <List className={style.root}>
                 {isLoading ? (
-                    [...Array(5)].map((_, i) => (
+                    [...Array(51)].map((_, i) => (
                         <React.Fragment key={`skeleton-${i}`}>
                             <ListItem disablePadding>
                                 <ListItemButton>
