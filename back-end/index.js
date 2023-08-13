@@ -48,7 +48,7 @@ app.get('/tags', PostController.getLastTags)
 app.get('/posts', PostController.getAllPosts)
 app.get('/posts/tags', PostController.getLastTags)
 app.get('/posts/:id', PostController.getOnePost)
-app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.createPost) //handleValidationErrors FI X
+app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.createPost)
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update)
 app.patch('/posts/:id/comments', checkAuth, PostController.addComment) //  postCreateValidation, handleValidationErrors,
 app.delete('/posts/:id', checkAuth, PostController.removePost)

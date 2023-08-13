@@ -2,7 +2,7 @@ import PostModel from '../models/Post.js'
 
 export const createPost = async (req, res) => {
     try {
-        const tags = req.body.tags ? req.body.tags.split(',') : []
+        const tags = req.body.tags ? req.body.tags : []
         const doc = new PostModel({
             title: req.body.title,
             text: req.body.text,
@@ -129,7 +129,7 @@ export const update = async (req, res) => {
             text: req.body.text,
             imageUrl: req.body.imageUrl,
             user: req.userId,
-            tags: req.body.tags?.split(',')
+            tags: req.body.tags
         })
         res.json({
             success: true

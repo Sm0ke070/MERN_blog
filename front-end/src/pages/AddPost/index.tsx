@@ -30,6 +30,7 @@ export const AddPost = () => {
                     setText(res.data.text)
                     setTags(res.data.tags)
                     setImageUrl(res.data.imageUrl)
+
                 })
                 .catch((err) => {
                     alert('Ошибка при создании статьи!')
@@ -70,7 +71,7 @@ export const AddPost = () => {
             const fields = {
                 title: title?.trim(),
                 imageUrl,
-                tags: tags,
+                tags: tags?.split(','),
                 text
             }
 
@@ -83,8 +84,8 @@ export const AddPost = () => {
             const postId = isEditing ? id : data._id
             navigate(`/posts/${postId}`)
         } catch (err) {
-            alert('Ошибка при создании статьи!')
-            console.warn(err)
+            alert('Ошибка при создании статьи2!')
+            console.error(err)
         }
     }
 

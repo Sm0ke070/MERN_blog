@@ -43,10 +43,20 @@ $blue: #4361ee;
 
 .content {
   margin: 30px 0 50px;
+  -webkit-line-clamp: 8; /* Число отображаемых строк */
+  display: -webkit-box; /* Включаем флексбоксы */
+  -webkit-box-orient: vertical; /* Вертикальная ориентация */
+  overflow: hidden; /* Обрезаем всё за пределами блока */
 
   p {
     font-size: 18px;
     line-height: 36px;
+  }
+
+  &Full {
+    /* Убираем стили, связанные с обрезанием текста */
+    display: block;
+
   }
 }
 

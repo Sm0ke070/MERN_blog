@@ -79,10 +79,12 @@ export const Post: FC<PostPropsType> = ({
             )}
             <div className={styles.wrapper}>
                 <UserInfo user={user} additionalText={createdAt}/>
+
                 <div className={styles.indention}>
                     <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
                         {isFullPost ? title : <Link to={`posts/${id}`}>{title}</Link>}
                     </h2>
+
                     <ul className={styles.tags}>
                         {tags && tags.map((name) => (
                             <li key={name}>
@@ -90,8 +92,12 @@ export const Post: FC<PostPropsType> = ({
                             </li>
                         ))}
                     </ul>
-                    {/*{children && <div className={styles.content}>{children}</div>}*/}
-                    {children && <div className={styles.content}><ReactMarkdown children={children}/></div>}
+
+                    {children &&
+                        <div className={clsx(styles.content, {[styles.contentFull]: isFullPost})}>
+                            <ReactMarkdown children={children}/>
+                        </div>}
+
                     <ul className={styles.postDetails}>
                         <li>
                             <EyeIcon/>
