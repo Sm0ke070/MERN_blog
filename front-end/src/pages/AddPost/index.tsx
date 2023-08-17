@@ -66,6 +66,7 @@ export const AddPost = () => {
 
     const onSubmit = async () => {
         try {
+            if (title.length < 3) return alert('Заголовок статьи не может быть меньше 3 символов!')
             if (text.length < 10) return alert('Текст статьи не может быть меньше 10 символов!')
 
             const fields = {

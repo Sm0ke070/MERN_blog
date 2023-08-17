@@ -22,6 +22,7 @@ type PostPropsType = {
         _id: string
         fullName: string
         email: string
+        avatarUrl: string
     }
     viewsCount: number
     commentsCount: number

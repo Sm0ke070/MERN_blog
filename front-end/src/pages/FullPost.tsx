@@ -5,7 +5,6 @@ import {IFetchPosts} from "../redux/slices/posts/posts";
 import {Post, AddComment, CommentsBlock} from "../components";
 import {PostSkeleton} from "../components/Post/Skeleton";
 import {useAppDispatch, useAppSelector} from "../redux/store";
-import ReactMarkdown from "react-markdown";
 
 export const FullPost = () => {
     const dispatch = useAppDispatch()
@@ -14,7 +13,6 @@ export const FullPost = () => {
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const {id} = useParams()
 
-    console.log('FullPost RENDER')
 
     useEffect(() => {
         if (id) {
@@ -24,12 +22,15 @@ export const FullPost = () => {
                     console.log(res.data, 'RES')
                     setData(res.data)
                     setIsLoading(false)
+                    console.log(res.data, 'QQQQQQQQQQQQQQQ')
                 }).catch((err) => {
                 console.log(err)
                 alert('Ошибка при получении статьи')
             })
         }
     }, [id, dispatch])
+
+
 
     if (isLoading) {
         return <PostSkeleton/>

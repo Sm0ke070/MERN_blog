@@ -47,7 +47,6 @@ export const getAllPosts = async (req, res) => {
         let sortBy = req.query.sortBy
         let sortOptions
 
-
         if (sortBy === '0') {
             sortOptions = {createdAt: -1}
         } else {
@@ -56,7 +55,10 @@ export const getAllPosts = async (req, res) => {
 
         const posts = await PostModel.find()
             .sort(sortOptions)
-            .populate('user')
+            .populate({
+                path: 'user',
+                select: '-passwordHash' // Исключаем поле passwordHash
+            })
             .exec()
 
         res.json(posts)
@@ -98,6 +100,11 @@ export const getOnePost = async (req, res) => {
             {$inc: {viewsCount: 1}},
             {returnDocument: 'after'}
         )
+            .populate({
+                path: 'user',
+                select: '-passwordHash' // Исключаем поле passwordHash
+            })
+            .exec()
 
         if (!updatedPost) {
             return res.status(404).json({

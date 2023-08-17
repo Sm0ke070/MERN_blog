@@ -20,7 +20,7 @@ export const Home: FC = () => {
     useEffect(() => {
         dispatch(fetchPosts())
         dispatch(fetchTags())
-    }, [sortBy])
+    }, [dispatch, sortBy])
 
     const changeSorting = (value: SortBy) => {
         dispatch(setSortBy(value))

@@ -21,7 +21,7 @@ export const TagsBlock: FC<TagsBlockPropsType> = ({
                                                       isLoading = true,
                                                   }) => {
     const dispatch = useAppDispatch();
-    const uniqueTagsArray = Array.from(new Set(items))
+    const uniqueTagsArray = Array.from(new Set(items)) // FIX сделать сортировку на бэке
     const sortByTagName = (name: string) => {
         dispatch(setSortByTagName(name));
     };
@@ -30,7 +30,7 @@ export const TagsBlock: FC<TagsBlockPropsType> = ({
         <SideBlock title="Тэги">
             <List className={style.root}>
                 {isLoading ? (
-                    [...Array(51)].map((_, i) => (
+                    [...Array(5)].map((_, i) => (
                         <React.Fragment key={`skeleton-${i}`}>
                             <ListItem disablePadding>
                                 <ListItemButton>

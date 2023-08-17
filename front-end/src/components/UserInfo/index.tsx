@@ -8,11 +8,11 @@ type UserInfoPropsType = {
         _id: string
         fullName: string
         email: string
-        avatarUrl?: string
+        avatarUrl: string
     }
 }
 export const UserInfo: FC<UserInfoPropsType> = ({user, additionalText}) => {
-    
+
     return (
         <div className={styles.root}>
             <img className={styles.avatar} src={user?.avatarUrl ? user.avatarUrl : defaultUserAvatar}
