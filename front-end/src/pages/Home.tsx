@@ -26,7 +26,6 @@ export const Home: FC = () => {
         dispatch(setSortBy(value))
     }
 
-
     return (
         <>
             <Tabs style={{marginBottom: 15}} value={sortBy} aria-label="basic tabs example">
